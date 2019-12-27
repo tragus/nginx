@@ -295,7 +295,7 @@ stream() { local server="$1" dest="$2" proto="${3:-""}" \
 # Return: configure SSL sessions
 ssl_sessions() { local timeout="${1:-1d}" file=/etc/nginx/conf.d/sessions.conf
     echo '# Session resumption (caching)' >$file
-    echo 'ssl_session_cache shared:SSL:50m;' >>$file
+    echo 'ssl_session_cache shared:SSL:2m;' >>$file
     echo "ssl_session_tickets off;" >>$file
     echo "ssl_session_timeout $timeout;" >>$file
 }

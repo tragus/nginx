@@ -14,6 +14,7 @@ RUN version=$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release) && \
     echo "https://nginx.org/packages/mainline/alpine/v${version}/main" \
                 >>/etc/apk/repositories && \
     apk add --no-cache --no-progress nginx && \
+    apk add --no-cache --no-progress nginx-mod-stream && \
     sed -i 's/#gzip/gzip/' /etc/nginx/nginx.conf && \
     sed -i "/http_x_forwarded_for\"';/s/';/ '/" /etc/nginx/nginx.conf && \
     sed -i "/http_x_forwarded_for/a \\\
@@ -21,8 +22,8 @@ RUN version=$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release) && \
                 /etc/nginx/nginx.conf && \
     echo -e "\n\nstream {\n    include /etc/nginx/conf.d/*.stream;\n}" \
                 >>/etc/nginx/nginx.conf && \
-    [ -d /srv/www ] || mkdir -p /srv/www && \
-    mv /usr/share/nginx/html/index.html /srv/www/ && \
+    mkdir -p /run/nginx /srv/www && \
+    mv /var/lib/nginx/html/index.html /srv/www/ && \
     apk add --no-cache --no-progress --virtual .gettext gettext && \
     mv /usr/bin/envsubst /usr/local/bin/ && \
     runDeps="$(scanelf --needed --nobanner /usr/local/bin/envsubst | \
