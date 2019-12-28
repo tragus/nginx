@@ -3,6 +3,7 @@ MAINTAINER David Personette <dperson@gmail.com>
 
 # Install nginx
 RUN version=$(egrep -o '^[0-9]+\.[0-9]+' /etc/alpine-release) && \
+    set -x && \
     apk --no-cache --no-progress upgrade && \
     apk --no-cache --no-progress add apache2-utils bash curl openssl shadow \
                 tini tzdata && \
